@@ -67,4 +67,4 @@ https://<username>.github.io/<repo-name>/
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details *(Optional: If you wish to add a license file)*
+This project is licensed under the MIT License
