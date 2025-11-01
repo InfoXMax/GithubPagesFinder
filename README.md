@@ -49,7 +49,7 @@ Each repo is checked for the field:
 If true, it means the repository has GitHub Pages enabled, and its site is available at:
 
 https://<username>.github.io/<repo-name>/
----
+```
 
 ## 🛠️ Built With
 
