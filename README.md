@@ -38,6 +38,7 @@ https://api.github.com/users/<username>/repos?per_page=100
 GitHub limits responses to **100 repositories per page**, so if a user has more, the app fetches additional pages dynamically using the `page` parameter:
 
 https://api.github.com/users/<username>/repos?per_page=100&page=2
+
 https://api.github.com/users/<username>/repos?per_page=100&page=3
 
 The app continues until all repositories are retrieved, ensuring that even users with hundreds of repositories are fully covered.
