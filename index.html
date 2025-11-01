@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Pages Repos Finder</title>
+<style>
+  body { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; background: #f0f2f5; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  h1 { margin-bottom: 20px; color: #333; }
+  .input-container { display: flex; gap: 10px; margin-bottom: 30px; }
+  input[type="text"] { padding: 10px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; width: 250px; transition: border 0.3s; }
+  input[type="text"]:focus { border-color: #007bff; outline: none; }
+  button { padding: 10px 20px; background-color: #007bff; border: none; border-radius: 8px; color: white; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+  button:hover { background-color: #0056b3; }
+  ul#repo-list { list-style: none; width: 100%; max-width: 500px; }
+  ul#repo-list li { background: white; padding: 12px 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
+  ul#repo-list li:hover { transform: translateY(-2px); }
+  ul#repo-list li a { text-decoration: none; color: #007bff; font-weight: 500; display: block; }
+  ul#repo-list li a:hover { text-decoration: underline; }
+  .message { color: #555; font-style: italic; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<h1>GitHub Pages Repos Finder</h1>
+
+<div class="input-container">
+  <input type="text" id="username" placeholder="Enter GitHub username">
+  <button onclick="fetchRepos()">Search</button>
+</div>
+
+<ul id="repo-list"></ul>
+<div class="message" id="message"></div>
+<footer class="footer">
+        <span>Made by Info X Max ❤️</span>
+    </footer>
+<script>
+function fetchRepos() {
+  const username = document.getElementById('username').value.trim();
+  const ul = document.getElementById('repo-list');
+  const message = document.getElementById('message');
+
+  ul.innerHTML = '';
+  message.textContent = '';
+
+  if (!username) {
+    message.textContent = "Please enter a GitHub username.";
+    return;
+  }
+
+  fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
+    .then(res => res.json())
+    .then(repos => {
+      if (repos.message) {
+        message.textContent = repos.message;
+        return;
+      }
+
+      const reposWithPages = repos.filter(repo => repo.has_pages);
+
+      if (reposWithPages.length === 0) {
+        message.textContent = "No repos with GitHub Pages found.";
+      } else {
+        reposWithPages.forEach(repo => {
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = `https://${username}.github.io/${repo.name}/`;
+          link.target = "_blank"; // open in new tab
+          link.textContent = repo.name;
+          li.appendChild(link);
+          ul.appendChild(li);
+        });
+      }
+    })
+    .catch(err => message.textContent = "Error fetching repos. Try again.");
+}
+</script>
+
+</body>
+</html>
